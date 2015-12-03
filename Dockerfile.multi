@@ -1,0 +1,65 @@
+ARG REPOSITORY=docker.osdc.io
+ARG BUILDER_TAG=3.1.0
+
+FROM scratch AS src
+
+ENV LIBMAUS_VERSION=2.0.610-release-20190328154814
+ARG VERSION
+ENV BIOBAMBAM_VERSION=${VERSION}
+
+ADD https://gitlab.com/german.tischler/libmaus2/-/archive/$LIBMAUS_VERSION/libmaus2-$LIBMAUS_VERSION.tar.gz /libmaus2.tar.gz
+ADD https://gitlab.com/german.tischler/biobambam2/-/archive/$BIOBAMBAM_VERSION/biobambam2-$BIOBAMBAM_VERSION.tar.gz /biobambam2.tar.gz
+
+FROM ${REPOSITORY}/ncigdc/amzn2023-builder:${BUILDER_TAG} AS builder
+
+ENV LIBMAUS_VERSION=2.0.610-release-20190328154814
+ARG VERSION
+ENV BIOBAMBAM_VERSION=${VERSION}
+
+RUN --mount=from=src,target=/src <<EOF
+mkdir -p /libmaus2
+tar -oxzf /src/libmaus2.tar.gz -C /libmaus2
+EOF
+
+RUN --mount=from=src,target=/src <<EOF
+mkdir -p /biobambam2
+tar -oxzf /src/biobambam2.tar.gz -C /biobambam2
+EOF
+
+RUN dnf install -y \
+	autoconf \
+	g++ \
+	libtool \
+	zlib-devel \
+	boost-devel \
+    automake
+
+ENV INSTALLDIR=/biobambam
+
+RUN mkdir -p ${INSTALLDIR}
+
+WORKDIR /libmaus2/libmaus2-$LIBMAUS_VERSION
+
+RUN <<EOF
+JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
+libtoolize
+aclocal
+autoreconf -i -f
+./configure --prefix=${INSTALLDIR}
+make -j ${JOBS}
+make -j ${JOBS} install
+EOF
+
+WORKDIR /biobambam2/biobambam2-$BIOBAMBAM_VERSION
+
+RUN <<EOF
+JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
+autoreconf -i -f
+LDFLAGS="-Wl,-rpath=$INSTALLDIR/lib -Wl,-z -Wl,origin" ./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
+make -j ${JOBS}
+make -j ${JOBS} install
+EOF
+
+ENV PATH=/biobambam/bin:$PATH
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]

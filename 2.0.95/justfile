@@ -1,0 +1,24 @@
+<<<<<<< HEAD
+SOFTWARE := "biobambam2"
+DOCKERFILE := "../Dockerfile.multi"
+||||||| parent of a422f75 (Template)
+=======
+SOFTWARE := "biobambam"
+DOCKERFILE := "./Dockerfile"
+>>>>>>> a422f75 (Template)
+BASE_CONTAINER_REGISTRY := env_var_or_default("BASE_CONTAINER_REGISTRY", "docker.osdc.io")
+
+VERSION := "2.0.95-release-20190320141403"
+
+emit-dockerfile:
+    @echo {{DOCKERFILE}}
+
+emit-version:
+  @echo {{VERSION}}
+
+build-docker:
+  docker buildx build --compress --progress plain \
+  -t "{{SOFTWARE}}-{{VERSION}}" \
+  -f {{DOCKERFILE}} \
+  . \
+  --build-arg REGISTRY="{{BASE_CONTAINER_REGISTRY}}"
