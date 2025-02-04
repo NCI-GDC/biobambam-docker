@@ -41,6 +41,7 @@ pwd
 ls -l
 ./configure
 make
+make install
 EOF
 
 WORKDIR /biobambam2/biobambam2-$BIOBAMBAM_VERSION
@@ -49,5 +50,6 @@ RUN <<EOF
 pwd
 ls -l
 ./configure --with-libmaus2=/usr/local
+make
 make install
 EOF
