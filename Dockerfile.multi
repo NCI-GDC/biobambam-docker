@@ -11,7 +11,6 @@ ADD https://gitlab.com/german.tischler/biobambam2/-/archive/$BIOBAMBAM_VERSION/b
 
 FROM ${REPOSITORY}/ncigdc/amzn2023-builder:${BUILDER_TAG} AS builder
 
-ENV LD_LIBRARY_PATH=/usr/local/lib
 
 ARG LIBMAUS_VERSION=2.0.812-release-20220919125234
 ARG BIOBAMBAM_VERSION=2.0.95-release-20190320141403
@@ -41,15 +40,15 @@ pwd
 ls -l
 ./configure
 make
-make install
 EOF
 
 WORKDIR /biobambam2/biobambam2-$BIOBAMBAM_VERSION
+
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
 RUN <<EOF
 pwd
 ls -l
 ./configure --with-libmaus2=/usr/local
-make
 make install
 EOF
