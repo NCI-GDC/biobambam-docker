@@ -40,14 +40,6 @@ RUN dnf update -y \
     && make install \
     && cd ../ \
     && rm -rf ${biobambam2dir} biobambam2.tar.gz \
-    && dnf remove -y \
-        autoconf \
-        curl \
-        g++ \
-        libtool \
-        pkgconf \
-        zlib-devel \
-        boost-devel \
     && dnf autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
