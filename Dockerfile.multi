@@ -57,3 +57,5 @@ LDFLAGS="-Wl,-rpath=$INSTALLDIR/lib -Wl,-z -Wl,origin" ./configure --with-libmau
 make -j ${JOBS}
 make -j ${JOBS} install
 EOF
+
+ENV PATH=/biobambam/bin:$PATH
