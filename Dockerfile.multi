@@ -11,7 +11,7 @@ ADD https://gitlab.com/german.tischler/biobambam2/-/archive/$BIOBAMBAM_VERSION/b
 
 FROM ${REPOSITORY}/ncigdc/amzn2023-builder:${BUILDER_TAG} AS builder
 
-ARG LIBMAUS_VERSION=2.0.812-release-20220919125234
+ARG LIBMAUS_VERSION=2.0.610-release-20190328154814
 ARG BIOBAMBAM_VERSION=2.0.95-release-20190320141403
 
 RUN --mount=from=src,target=/src <<EOF
