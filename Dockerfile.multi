@@ -45,6 +45,7 @@ ls -l
 ./configure --prefix=${INSTALLDIR}
 make -j ${JOBS}
 make -j ${JOBS} install
+ls -l ${INSTALLDIR}
 EOF
 
 WORKDIR /biobambam2/biobambam2-$BIOBAMBAM_VERSION
