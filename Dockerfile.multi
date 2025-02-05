@@ -38,7 +38,6 @@ RUN mkdir -p ${INSTALLDIR}
 
 WORKDIR /libmaus2/libmaus2-$LIBMAUS_VERSION
 
-
 RUN <<EOF
 JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 pwd
@@ -50,14 +49,12 @@ EOF
 
 WORKDIR /biobambam2/biobambam2-$BIOBAMBAM_VERSION
 
-ENV LD_LIBRARY_PATH=/usr/local/lib
-
 RUN <<EOF
 JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 pwd
 ls -l
 autoreconf -i -f
-./configure --with-libmaus2=${INSTALLDIR}
+LD_LIBRARY_PATH=${INSTALLDIR} ./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
 make -j ${JOBS}
 make -j ${JOBS} install
 EOF
