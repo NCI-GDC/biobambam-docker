@@ -11,7 +11,6 @@ ADD https://gitlab.com/german.tischler/biobambam2/-/archive/$BIOBAMBAM_VERSION/b
 
 FROM ${REPOSITORY}/ncigdc/amzn2023-builder:${BUILDER_TAG} AS builder
 
-
 ARG LIBMAUS_VERSION=2.0.812-release-20220919125234
 ARG BIOBAMBAM_VERSION=2.0.95-release-20190320141403
 
@@ -39,9 +38,9 @@ RUN mkdir -p ${INSTALLDIR}
 
 WORKDIR /libmaus2/libmaus2-$LIBMAUS_VERSION
 
-ENV JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 
 RUN <<EOF
+JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 pwd
 ls -l
 ./configure --prefix=${INSTALLDIR}
@@ -54,6 +53,7 @@ WORKDIR /biobambam2/biobambam2-$BIOBAMBAM_VERSION
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
 RUN <<EOF
+JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 pwd
 ls -l
 autoreconf -i -f
