@@ -53,7 +53,7 @@ RUN <<EOF
 JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 pwd
 ls -l
-./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
+PKG_CONFIG_PATH=/biobambam/lib ./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
 make -j ${JOBS}
 make -j ${JOBS} install
 EOF
