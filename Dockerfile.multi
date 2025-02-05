@@ -2,18 +2,18 @@ ARG REPOSITORY=docker.osdc.io
 ARG BUILDER_TAG=3.1.0
 ARG VERSION
 
-FROM scratch as src
+FROM scratch AS src
 
-ARG LIBMAUS_VERSION=2.0.610-release-20190328154814
-ARG BIOBAMBAM_VERSION=$VERSION
+ENV LIBMAUS_VERSION=2.0.610-release-20190328154814
+ENV BIOBAMBAM_VERSION=$VERSION
 
 ADD https://gitlab.com/german.tischler/libmaus2/-/archive/$LIBMAUS_VERSION/libmaus2-$LIBMAUS_VERSION.tar.gz /libmaus2.tar.gz
 ADD https://gitlab.com/german.tischler/biobambam2/-/archive/$BIOBAMBAM_VERSION/biobambam2-$BIOBAMBAM_VERSION.tar.gz /biobambam2.tar.gz
 
 FROM ${REPOSITORY}/ncigdc/amzn2023-builder:${BUILDER_TAG} AS builder
 
-ARG LIBMAUS_VERSION=2.0.610-release-20190328154814
-ARG BIOBAMBAM_VERSION=$VERSION
+ENV LIBMAUS_VERSION=2.0.610-release-20190328154814
+ENV BIOBAMBAM_VERSION=$VERSION
 
 RUN --mount=from=src,target=/src <<EOF
 mkdir -p /libmaus2
