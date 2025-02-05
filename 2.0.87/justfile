@@ -7,6 +7,9 @@ VERSION := "2.0.87-release-20180301132713"
 emit-dockerfile:
     @echo {{DOCKERFILE}}
 
+emit-version:
+  @echo {{VERSION}}
+
 build-docker:
   docker buildx build --compress --progress plain \
   -t "{{SOFTWARE}}-{{VERSION}}" \
