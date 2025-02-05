@@ -58,6 +58,10 @@ make -j ${JOBS}
 make -j ${JOBS} install
 EOF
 
+FROM ${REPOSITORY}/ncigdc/amzn2023:${BUILDER_TAG}
+
+COPY --from=builder /biobambam /biobambam
+
 ENV PATH=/biobambam/bin:$PATH
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
