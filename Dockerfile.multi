@@ -28,12 +28,9 @@ RUN dnf install -y \
 	autoconf \
 	g++ \
 	libtool \
-	pkgconf \
 	zlib-devel \
 	boost-devel \
-    automake \
-    libc6-compat \
-    musl-dev
+    automake
 
 ENV INSTALLDIR=/biobambam
 
