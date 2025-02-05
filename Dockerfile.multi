@@ -49,6 +49,8 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 RUN <<EOF
 pwd
 ls -l
+autoreconf -i -f
 ./configure --with-libmaus2=/usr/local
+make
 make install
 EOF
