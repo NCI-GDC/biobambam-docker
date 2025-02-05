@@ -1,6 +1,6 @@
 #!/bin/bash -x
 set -o pipefail
-SOFTWARE="biobambam"
+SOFTWARE="biobambam2"
 
 while getopts b:t: option; do
 	case "${option}" in
@@ -58,6 +58,7 @@ for directory in *; do
 
 		# Allow per-version Dockerfile
 		DOCKERFILE=$(just emit-dockerfile)
+		VERSION=$(just emit-version)
 		BUILD_TAG="build-${SOFTWARE}:${directory}"
 		docker buildx build --compress --progress plain \
   			-t "${BUILD_TAG}" \
@@ -68,7 +69,7 @@ for directory in *; do
   			--label org.opencontainers.ref.name="${SOFTWARE}:${directory}" \
   			--build-arg http_proxy="${PROXY}" \
   			--build-arg https_proxy="${PROXY}" \
-  			--build-arg VERSION="${directory}" \
+  			--build-arg VERSION="${VERSION}" \
   			--build-arg REGISTRY="${BASE_CONTAINER_REGISTRY}"
 
 		# Assign the final tags now so later images can build on this one.
