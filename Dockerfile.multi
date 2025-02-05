@@ -53,8 +53,7 @@ RUN <<EOF
 JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 pwd
 ls -l
-autoreconf -i -f
-LD_LIBRARY_PATH=${INSTALLDIR} ./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
+./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
 make -j ${JOBS}
 make -j ${JOBS} install
 EOF
