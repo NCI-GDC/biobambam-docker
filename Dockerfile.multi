@@ -30,7 +30,10 @@ RUN dnf install -y \
 	libtool \
 	pkgconf \
 	zlib-devel \
-	boost-devel
+	boost-devel \
+    automake \
+    libc6-compat \
+    musl-dev
 
 ENV INSTALLDIR=/biobambam
 
