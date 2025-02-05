@@ -40,21 +40,20 @@ WORKDIR /libmaus2/libmaus2-$LIBMAUS_VERSION
 
 RUN <<EOF
 JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
-pwd
-ls -l
+libtoolize
+aclocal
+autoreconf -i -f
 ./configure --prefix=${INSTALLDIR}
 make -j ${JOBS}
 make -j ${JOBS} install
-ls -l ${INSTALLDIR}
 EOF
 
 WORKDIR /biobambam2/biobambam2-$BIOBAMBAM_VERSION
 
 RUN <<EOF
 JOBS=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
-pwd
-ls -l
-PKG_CONFIG_PATH=/biobambam/lib ./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
+autoreconf -i -f
+./configure --with-libmaus2=${INSTALLDIR} --prefix=${INSTALLDIR}
 make -j ${JOBS}
 make -j ${JOBS} install
 EOF
